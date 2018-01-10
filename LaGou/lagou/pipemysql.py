@@ -2,6 +2,9 @@ from twisted.enterprise import adbapi
 import MySQLdb.cursors
 
 from scrapy.utils.project import get_project_settings
+
+# 异步 MYSQL
+
 class MySQLAsyncPipeline(object):
 
 
@@ -26,7 +29,19 @@ class MySQLAsyncPipeline(object):
         values=(itme['positionName'],
                 itme['companyShortName'],
                 itme['salary'],
+                itme['industryField'],
                 itme['positionAdvantage'],
+                itme['workYear'],
+                itme['education'],
+                itme['jobNature'],
+                itme['positionId'],
+                itme['createTime'],
+                itme['city'],
+                itme['district'],
+                itme['companyFullName'],
+                itme['financeStage'],
+                itme['companySize'],
+                itme['info']
         )
-        sql='INSERT IGNORE INTO java_beijing (positionName, companyShortName, salary, positionAdvantage) VALUES ("%s", "%s", "%s", "%s")'
+        sql='INSERT IGNORE INTO java_beijing (positionName, companyShortName, salary, industryField, positionAdvantage, workYear, education, jobNature, positionId, createTime, city, district, companyFullName, financeStage, companySize, info) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")'
         tx.execute(sql,values)

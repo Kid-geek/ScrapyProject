@@ -54,3 +54,39 @@ class LagouSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+# 阿波云代理
+class ProxyMiddleware(object):
+    # overwrite process request
+    def process_request(self, request, spider):
+        # Set the location of the proxy
+        if request.url.startswith('http://'):
+            request.meta['proxy'] = ProxyMiddleware().proxy().get('http')  # "http://YOUR_PROXY_IP:PORT"
+        else:
+            request.meta['proxy'] = ProxyMiddleware().proxy().get('https')  # "http://YOUR_PROXY_IP:PORT"
+
+    # 代理服务器
+    @staticmethod
+    def proxy():
+        # 代理服务器
+        proxyHost = "proxy.abuyun.com"
+        proxyPort = "9020"
+
+        # 代理隧道验证信息
+        proxyUser = "H55RA0Y147842O4D"
+        proxyPass = "4FE078BC80525DB2"
+
+        proxyMeta = "http://%(user)s:%(pass)s@%(host)s:%(port)s" % {
+            "host": proxyHost,
+            "port": proxyPort,
+            "user": proxyUser,
+            "pass": proxyPass,
+        }
+
+        proxies = {
+            "http": proxyMeta,
+            "https": proxyMeta,
+        }
+
+        return proxies
+

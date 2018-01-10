@@ -3,28 +3,12 @@
 # cookie_dict = dict((line.split('=') for line in cookie.strip().split(";")))
 #
 # print(cookie_dict)
+import random
+a=[1,2,3,4]
+ua = random.choice(a)
+if ua:
+    print(ua)
+else:
+    print('b')
 
-import json
-dict={
-  "sites": {
-    "site": [
-      {
-        "id": "1",
-        "name": "菜鸟教程",
-        "url": "www.runoob.com"
-      },
-      {
-        "id": "2",
-        "name": "菜鸟工具",
-        "url": "c.runoob.com"
-      },
-      {
-        "id": "3",
-        "name": "Google",
-        "url": "www.google.com"
-      }
-    ]
-  }
-}
-site=dict['sites']
-print(site['site'])
+

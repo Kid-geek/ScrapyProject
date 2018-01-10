@@ -2,6 +2,8 @@ from twisted.enterprise import adbapi
 import MySQLdb.cursors
 from scrapy.utils.project import get_project_settings
 
+# 同步MYSQL
+
 class MySQLPipeline(object):
 
     def open_spider(self,spider):
