@@ -53,9 +53,11 @@ FEED_EXPORT_ENCODING = 'utf-8'
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
+
 DOWNLOADER_MIDDLEWARES = {
    'lagou.middlewares.ProxyMiddleware': 543,
 }
+
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -107,24 +109,36 @@ DOWNLOAD_TIMEOUT = 35
 
 # REDIRECT_ENABLED = True #禁止重定向
 
+#在此设置POST 的 URL
+# px  排序方式: new  最新  default   默认
+# gx  工作性质: 全职   实习
+# gj  工作经验: 不限 应届毕业生 3年及以下 3-5年 5-10年 10年以上 不要求
+#     工作经验为 应届毕业生时 URL为 'https://www.lagou.com/jobs/positionAjax.json?px=default&gx=全职&city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false&isSchoolJob=1'
+POST_URL='https://www.lagou.com/jobs/positionAjax.json?&px=new&city=北京&needAddtionalResult=false&isSchoolJob=0'
 
+# 在此设置要输入的职位关键字
+POSITION='爬虫'
 
 MYSQL_DB_NAME='lagou_scrapy'
 MYSQL_HOST='localhost'
 MYSQL_USER='root'
 MYSQL_PASSWORD='123456'
 
+# 在此设置要存入哪个表
+MYSQL_TABLE_NAME='all'
+
+
 ITEM_PIPELINES = {
    # 'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
    #  'ArticleSpider.mysql_pipelines.MySQLPipeline':401,
-    'lagou.pipemysql.MySQLAsyncPipeline': 401
+    'lagou.pipemysql_all.MySQLAsyncPipeline': 401
     # 'lagou.mysql_pipe.MySQLPipeline': 401
 }
 
 
 HEADER={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
-        'Cookie':'JSESSIONID=ABAAABAACBHABBIA187B7282557E66499A428644DA36BEA; _ga=GA1.2.145327400.1515463987; user_trace_token=20180109101307-a22bd30a-f4e2-11e7-a021-5254005c3644; LGUID=20180109101307-a22bd699-f4e2-11e7-a021-5254005c3644; _gid=GA1.2.1007945172.1515463987; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1515463987; index_location_city=%E5%8C%97%E4%BA%AC; X_HTTP_TOKEN=b16b5e3154608ccb232953f358a2639d; LGSID=20180110165347-c52fdfcd-f5e3-11e7-8227-525400f775ce; X_MIDDLE_TOKEN=15cea09db2cd4031bcb52054dce69c85; _gat=1; TG-TRACK-CODE=index_search; SEARCH_ID=c5ec6d7d733542249756aef288cec1dc; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1515576257; LGRID=20180110172420-09f44a21-f5e8-11e7-822a-525400f775ce'
-   , 'Referer':'https://www.lagou.com/jobs/list_java?px=new&city=%E5%8C%97%E4%BA%AC'
+        # 'Cookie':'JSESSIONID=ABAAABAACBHABBIA187B7282557E66499A428644DA36BEA; _ga=GA1.2.145327400.1515463987; user_trace_token=20180109101307-a22bd30a-f4e2-11e7-a021-5254005c3644; LGUID=20180109101307-a22bd699-f4e2-11e7-a021-5254005c3644; _gid=GA1.2.1007945172.1515463987; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1515463987; index_location_city=%E5%8C%97%E4%BA%AC; X_HTTP_TOKEN=b16b5e3154608ccb232953f358a2639d; LGSID=20180110165347-c52fdfcd-f5e3-11e7-8227-525400f775ce; X_MIDDLE_TOKEN=15cea09db2cd4031bcb52054dce69c85; _gat=1; TG-TRACK-CODE=index_search; SEARCH_ID=c5ec6d7d733542249756aef288cec1dc; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1515576257; LGRID=20180110172420-09f44a21-f5e8-11e7-822a-525400f775ce'
+        'Referer': 'https://www.lagou.com/jobs/list_java?px=new&city=%E5%8C%97%E4%BA%AC'
 }
 
 COOKIES={'JSESSIONID': 'ABAAABAACBHABBIA187B7282557E66499A428644DA36BEA', ' _ga': 'GA1.2.145327400.1515463987', ' user_trace_token': '20180109101307-a22bd30a-f4e2-11e7-a021-5254005c3644', ' LGUID': '20180109101307-a22bd699-f4e2-11e7-a021-5254005c3644', ' _gid': 'GA1.2.1007945172.1515463987', ' Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6': '1515463987', ' index_location_city': '%E5%8C%97%E4%BA%AC', ' TG-TRACK-CODE': 'search_code', ' SEARCH_ID': '19da954bda14430e96bfbeb7e280917a', ' _gat': '1', ' LGSID': '20180109104920-b11805d6-f4e7-11e7-a021-5254005c3644', ' PRE_UTM': '', ' PRE_HOST': '', ' PRE_SITE': 'https%3A%2F%2Fwww.lagou.com%2Fjobs%2Flist_java%3FlabelWords%3D%26fromSearch%3Dtrue%26suginput%3D', ' PRE_LAND': 'https%3A%2F%2Fwww.lagou.com%2Fjobs%2Flist_java%3Fpx%3Dnew%26city%3D%25E5%258C%2597%25E4%25BA%25AC', ' Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6': '1515466160', ' LGRID': '20180109105141-0522d10d-f4e8-11e7-a021-5254005c3644'}

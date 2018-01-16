@@ -13,6 +13,7 @@ class LagouSpider(scrapy.Spider):
     allowed_domains = ['www.lagou.com']
     start_urls = ['https://www.lagou.com/jobs/positionAjax.json?px=new&city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false&isSchoolJob=0']
 
+    #设置默认头  防封
     custom_settings = {
         "COOKIES_ENABLED": False,
         # "DOWNLOAD_DELAY": 1,
@@ -32,16 +33,18 @@ class LagouSpider(scrapy.Spider):
     def __init__(self):
         self.headers = settings.HEADER
         self.cookies = settings.COOKIES
+        self.position= settings.POSITION
 
-    login_url='https://www.lagou.com/jobs/positionAjax.json?px=new&city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false&isSchoolJob=0'
+    login_url=settings.POST_URL
 
     def start_requests(self):
 
-        for num in range(11,32):
+        # POST 列表URL
+        for num in range(10,30):
             log.info('======解析至:{}====='.format(num))
             fd = {'first': 'false',
               'pn': str(num),
-              'kd': 'java'}
+              'kd': self.position}
             yield FormRequest(self.login_url,
                           formdata=fd,
                           headers=self.headers,
@@ -77,61 +80,10 @@ class LagouSpider(scrapy.Spider):
             print(info_url)
             yield scrapy.Request(url=info_url,meta={'item': lagou,'dont_redirect':True},headers=self.headers,callback=self.parse_info)
 
+    # 解析详情页
     def parse_info(self,response):
         info=response.xpath('string(//dd[@class="job_bt"])').extract_first().strip()
         print(info)
         lagou = response.meta['item']
         lagou['info']=info
         yield lagou
-
-
-
-
-
-
-    # def post_url(self,response,num):
-    #     fd = {'first': 'false',
-    #           'pn': num,
-    #           'kd': 'java'}
-    #     yield FormRequest.from_response(response,
-    #                       formdata=fd,
-    #                       headers=self.headers,
-    #                       cookies=self.cookies,
-    #                       callback=self.parse)  # jump to login page
-
-
-
-        # for num in range(2,5):
-        #     print('解析第{}页'.format(num))
-        #     log.info('=====执行Post请求=====')
-        #     fd = {'first': 'false',
-        #           'pn': num,
-        #           'kd': '爬虫'}
-        #     yield FormRequest.from_response(response, formdata=fd, callback=self.parse)
-        # pass
-
-
-
-
-            # #
-    # def POST(self, response,num):
-    #     log.info('=====执行Post请求=====')
-    #     fd={'first': 'false',
-    #     'pn': num,
-    #             'kd': '爬虫'}
-    #     print(response)
-    #     yield FormRequest.from_response(response, formdata=fd, callback=self.parse)
-
-
-    # def parse_article(self,response):
-    #     log.info('=====解析详情页=====')
-    #     article = ArticlespiderItem()
-    #     article['title'] = response.xpath('//div[@class="entry-header"]/h1/text()').extract_first()
-    #     article['date'] = response.xpath('//div[@class="entry-meta"]/p/text()').extract_first().strip()
-    #     yield article
-    #
-    # def parse_next_url(self,response):
-    #     log.info('=====解析下一页URL=====')
-    #     next_url=response.xpath('//a[@class="next page-numbers"]/@href').extract_first()
-    #     # if next_url!=[]:
-    #     return next_url

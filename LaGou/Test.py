@@ -3,12 +3,7 @@
 # cookie_dict = dict((line.split('=') for line in cookie.strip().split(";")))
 #
 # print(cookie_dict)
-import random
-a=[1,2,3,4]
-ua = random.choice(a)
-if ua:
-    print(ua)
-else:
-    print('b')
 
-
+a=''
+b='aa'
+print(b)

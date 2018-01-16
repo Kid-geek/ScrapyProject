@@ -1,4 +1,3 @@
-from twisted.enterprise import adbapi
 import MySQLdb.cursors
 from scrapy.utils.project import get_project_settings
 
